@@ -8,11 +8,11 @@ import 'bootstrap'
 // Immediately-Invoked Function Expression (IIFE)
 (function iife() {
 
-	console.log('Hello World');
+  console.log('Hello World');
 
-	// Bootstrap 4 Popover Example
-	$(function () {
-	  $('[data-toggle="popover"]').popover();
-	});
+  // Bootstrap 4 Popover Example
+  $(function () {
+    $('[data-toggle="popover"]').popover();
+  });
 
 })(); // /iife
