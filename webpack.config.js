@@ -5,36 +5,37 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack'); // reference to webpack Object
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const EslintFriendlyFormatter = require('eslint-friendly-formatter');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 const devMode = process.env.NODE_ENV !== 'production';
 
 // Constant with our paths
 const paths = {
   DIST: path.resolve(__dirname, 'public'),
-  SRC: path.resolve(__dirname, 'src')
+  SRC: path.resolve(__dirname, 'src'),
 };
 
 // Webpack configuration
 module.exports = {
   entry: [
-    path.join(paths.SRC, 'app.js')
+    path.join(paths.SRC, 'app.js'),
   ],
   output: {
     path: paths.DIST,
-    filename: '[name].[hash].js'
+    filename: '[name].[hash].js',
   },
   optimization: {
     splitChunks: {
-      chunks: 'all'
+      chunks: 'all',
     },
     minimizer: [
       new UglifyJsPlugin({
         cache: true,
         parallel: true,
-        sourceMap: true // set to true if you want JS source maps
+        sourceMap: true, // set to true if you want JS source maps
       }),
       new OptimizeCSSAssetsPlugin({
         sourceMap: true,
@@ -42,10 +43,10 @@ module.exports = {
           map: {
             inline: false,
             annotation: true,
-          }
-        }
-      })
-    ]
+          },
+        },
+      }),
+    ],
   },
   // Tell webpack to use html plugin -> ADDED IN THIS STEP
   // index.html is used as a template in which it'll inject bundled app.
@@ -53,7 +54,7 @@ module.exports = {
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
-      Popper: 'popper.js'
+      Popper: 'popper.js',
     }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
@@ -73,7 +74,7 @@ module.exports = {
       },
     ]),
     new ScriptExtHtmlWebpackPlugin({
-      defaultAttribute: 'defer'
+      defaultAttribute: 'defer',
     }),
   ],
   // Loaders configuration -> ADDED IN THIS STEP
@@ -84,13 +85,19 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: [
-        'babel-loader'
+          'babel-loader',
+          {
+            loader: 'eslint-loader',
+            options: {
+              formatter: EslintFriendlyFormatter,
+            },
+          },
         ],
       },
       {
         test: /\.scss$/,
         use: [
-        devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
             options: {
@@ -108,7 +115,7 @@ module.exports = {
     ],
   },
   stats: {
-    colors: true
+    colors: true,
   },
   devtool: 'source-map',
   // Enable importing JS files without specifying their's extenstion -> ADDED IN THIS STEP
@@ -119,6 +126,7 @@ module.exports = {
   // Instead of:
   // import MyComponent from './my-component.jsx';
   resolve: {
+    modules: [path.resolve(__dirname, 'src'), 'node_modules'],
     extensions: ['.js', '.jsx', '.scss'],
   },
 };
