@@ -7,6 +7,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack'); // reference to webpack Object
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
 
 const devMode = process.env.NODE_ENV !== 'production';
 
@@ -71,6 +72,9 @@ module.exports = {
         ignore: ['.*'],
       },
     ]),
+    new ScriptExtHtmlWebpackPlugin({
+      defaultAttribute: 'defer'
+    }),
   ],
   // Loaders configuration -> ADDED IN THIS STEP
   // We are telling webpack to use "babel-loader" for .js and .jsx files
