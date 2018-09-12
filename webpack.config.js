@@ -6,7 +6,7 @@ const webpack = require('webpack'); // reference to webpack Object
 
 // Constant with our paths
 const paths = {
-    DIST: path.resolve(__dirname, 'dist'),
+    DIST: path.resolve(__dirname, 'public'),
     SRC: path.resolve(__dirname, 'src')
 };
 
