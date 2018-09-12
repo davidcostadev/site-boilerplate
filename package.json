@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npm run build && http-server public",
     "dev": "npm-run-all --parallel build:html build:webpack",
-    "build:webpack": "webpack-dev-server --mode=development",
+    "build:webpack": "webpack-dev-server --open --mode=development",
     "build": "npm run html && export NODE_ENV=production && webpack --mode=production",
     "html": "html-import-partials templates/*html -o public",
     "build:html": "nodemon --watch templates/ -e html --exec 'npm run html'"
@@ -34,7 +34,7 @@
     "webpack-dev-server": "^3.1.8"
   },
   "dependencies": {
-    "bootstrap": "^4.0.0-beta.2",
+    "bootstrap": "^4.1.3",
     "jquery": "^3.2.1",
     "popper.js": "^1.12.6"
   }
