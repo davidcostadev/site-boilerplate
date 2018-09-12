@@ -2,6 +2,7 @@
 // https://nodejs.org/api/path.html
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack'); // reference to webpack Object
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
@@ -55,6 +56,13 @@ module.exports = {
       filename: devMode ? '[name].css' : '[name].[hash].css',
       chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
     }),
+    new CopyWebpackPlugin([
+      {
+        from: path.resolve(__dirname, './static'),
+        to: 'static',
+        ignore: ['.*'],
+      },
+    ])
   ],
   // Loaders configuration -> ADDED IN THIS STEP
   // We are telling webpack to use "babel-loader" for .js and .jsx files
