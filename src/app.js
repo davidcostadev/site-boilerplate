@@ -1,4 +1,5 @@
 import 'bootstrap'
+import $ from 'jquery';
 
 import './assets/style'
 

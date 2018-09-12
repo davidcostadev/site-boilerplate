@@ -35,7 +35,15 @@ module.exports = {
         parallel: true,
         sourceMap: true // set to true if you want JS source maps
       }),
-      new OptimizeCSSAssetsPlugin({})
+      new OptimizeCSSAssetsPlugin({
+        sourceMap: true,
+        cssProcessorOptions: {
+          map: {
+            inline: false,
+            annotation: true,
+          }
+        }
+      })
     ]
   },
   // Tell webpack to use html plugin -> ADDED IN THIS STEP
@@ -62,7 +70,7 @@ module.exports = {
         to: 'static',
         ignore: ['.*'],
       },
-    ])
+    ]),
   ],
   // Loaders configuration -> ADDED IN THIS STEP
   // We are telling webpack to use "babel-loader" for .js and .jsx files
@@ -79,20 +87,31 @@ module.exports = {
         test: /\.scss$/,
         use: [
         devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
-        'css-loader',
-        'sass-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
         ],
       },
     ],
   },
-    // Enable importing JS files without specifying their's extenstion -> ADDED IN THIS STEP
-    //
-    // So we can write:
-    // import MyComponent from './my-component';
-    //
-    // Instead of:
-    // import MyComponent from './my-component.jsx';
-    resolve: {
+  // Enable importing JS files without specifying their's extenstion -> ADDED IN THIS STEP
+  //
+  // So we can write:
+  // import MyComponent from './my-component';
+  //
+  // Instead of:
+  // import MyComponent from './my-component.jsx';
+  devtool: 'source-map',
+  resolve: {
     extensions: ['.js', '.jsx', '.scss'],
   },
 };
