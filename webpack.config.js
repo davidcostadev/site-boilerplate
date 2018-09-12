@@ -103,6 +103,10 @@ module.exports = {
       },
     ],
   },
+  stats: {
+    colors: true
+  },
+  devtool: 'source-map',
   // Enable importing JS files without specifying their's extenstion -> ADDED IN THIS STEP
   //
   // So we can write:
@@ -110,7 +114,6 @@ module.exports = {
   //
   // Instead of:
   // import MyComponent from './my-component.jsx';
-  devtool: 'source-map',
   resolve: {
     extensions: ['.js', '.jsx', '.scss'],
   },
