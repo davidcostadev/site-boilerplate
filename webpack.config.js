@@ -1,7 +1,7 @@
 // We are using node's native package 'path'
 // https://nodejs.org/api/path.html
 const path = require('path');
-
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack'); // reference to webpack Object
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
@@ -44,6 +44,12 @@ module.exports = {
       $: 'jquery',
       jQuery: 'jquery',
       Popper: 'popper.js'
+    }),
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
+      filename: 'index.html',
+      chunksSortMode: 'dependency',
+      minify: true,
     }),
     new MiniCssExtractPlugin({
       filename: devMode ? '[name].css' : '[name].[hash].css',
