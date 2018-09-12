@@ -1,9 +1,6 @@
-// Main JavaScript File
-
-// import modules here
-
-// import Bootstrap 4 JavaScript
 import 'bootstrap'
+
+import './assets/style'
 
 // Immediately-Invoked Function Expression (IIFE)
 (function iife() {

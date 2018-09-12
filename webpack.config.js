@@ -2,7 +2,12 @@
 // https://nodejs.org/api/path.html
 const path = require('path');
 
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack'); // reference to webpack Object
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+
+const devMode = process.env.NODE_ENV !== 'production';
 
 // Constant with our paths
 const paths = {
@@ -17,7 +22,20 @@ module.exports = {
   ],
   output: {
     path: paths.DIST,
-    filename: 'app.bundle.js'
+    filename: '[name].[hash].js'
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all'
+    },
+    minimizer: [
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        sourceMap: true // set to true if you want JS source maps
+      }),
+      new OptimizeCSSAssetsPlugin({})
+    ]
   },
   // Tell webpack to use html plugin -> ADDED IN THIS STEP
   // index.html is used as a template in which it'll inject bundled app.
@@ -26,7 +44,11 @@ module.exports = {
       $: 'jquery',
       jQuery: 'jquery',
       Popper: 'popper.js'
-    })
+    }),
+    new MiniCssExtractPlugin({
+      filename: devMode ? '[name].css' : '[name].[hash].css',
+      chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
+    }),
   ],
   // Loaders configuration -> ADDED IN THIS STEP
   // We are telling webpack to use "babel-loader" for .js and .jsx files
@@ -38,7 +60,15 @@ module.exports = {
         use: [
         'babel-loader'
         ],
-      }
+      },
+      {
+        test: /\.scss$/,
+        use: [
+        devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+        'css-loader',
+        'sass-loader',
+        ],
+      },
     ],
   },
     // Enable importing JS files without specifying their's extenstion -> ADDED IN THIS STEP
@@ -49,6 +79,6 @@ module.exports = {
     // Instead of:
     // import MyComponent from './my-component.jsx';
     resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.scss'],
   },
 };
